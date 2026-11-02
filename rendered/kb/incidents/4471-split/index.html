@@ -16,7 +16,7 @@ h1 { margin:.25rem 0 .5rem; line-height:1.2; }
 footer { margin-top:3rem; color:var(--muted); font-size:.8rem; border-top:1px solid var(--line); padding-top:1rem; }
 aside { border-left:4px solid var(--accent); padding:.5rem 1rem; margin:1rem 0; background:var(--note-bg); }
 aside.warn { border-color:var(--warn); background:var(--warn-bg); }
-.sum { font-size:1.1rem; } .tags { color:var(--muted); font-size:.85em; }
+.sum { font-size:1.1rem; } .note { color:var(--muted); font-size:.85em; } .tags { color:var(--muted); font-size:.85em; }
 .tablewrap { overflow-x:auto; }
 svg { width:100%; max-width:640px; } .in { fill:var(--warn); } .merged { fill:var(--accent); }
 text { font:8px var(--mono); fill:var(--muted); text-anchor:middle; }
@@ -38,14 +38,15 @@ figcaption { color:var(--muted); font-size:.85rem; }
 <div class="tablewrap"><table>
 <thead><tr><th>problem</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th>issue</th></tr></thead>
 <tbody>
-<tr><td><code>parser</code></td><td>374</td><td class="tags">parser ×351 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td><a href="https://github.com/melanie-gauthier/megadev/issues/1">#1</a></td></tr>
+<tr><td><code>parser</code></td><td>379</td><td class="tags">parser ×356 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td><a href="https://github.com/melanie-gauthier/megadev/issues/1">#1</a></td></tr>
 <tr><td><code>hint</code></td><td>33</td><td class="tags">hint ×18 · parser ×15</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td><a href="https://github.com/melanie-gauthier/megadev/issues/2">#2</a></td></tr>
 <tr><td><code>one-day move</code></td><td>5</td><td class="tags">parser ×5</td><td>5</td><td>2026-04-02 → 2026-10-04</td><td><a href="https://github.com/melanie-gauthier/megadev/issues/3">#3</a></td></tr>
 </tbody></table></div>
+<p class="note">The 5 one-day moves are counted under <code>parser</code>, where the desk files them by tenant, and have an issue of their own.</p>
 <ul>
 <li><strong><code>parser</code></strong>: the shared parser reads every date month first. Every tenant on file writes the day first, so day and month swap. Any channel, any form.</li>
 <li><strong><code>hint</code></strong>: booking-v3's form prints <code>MM/DD/YYYY</code> under its date field. People type what it says, and the form reads it day first. Only the <code>form</code> channel of booking-v3 tenants. The parser fix does not touch it.</li>
-<li><strong><code>one-day move</code></strong>: the booking lands a day early, or on different days in different time zones. Nothing is swapped. These are the reports the desk already noted as one-day moves (<code>desk-notes.json</code>); the #4471 page still counts them under <code>parser</code>.</li>
+<li><strong><code>one-day move</code></strong>: the booking lands a day early, or on different days in different time zones. Nothing is swapped. These are the reports the desk already noted as one-day moves (<code>desk-notes.json</code>). The desk counts them under <code>parser</code>, where their tenant files them, so the <code>parser</code> row includes them; they have an issue of their own.</li>
 </ul>
 <h2>How the reports were placed</h2>
 <ul>

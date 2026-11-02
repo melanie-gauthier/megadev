@@ -38,7 +38,8 @@ Not one issue. Fixing the parser leaves the booking-v3 form hint and the one-day
   fix does not touch it.
 - **`one-day move`**: the booking lands a day early, or on different days in different time zones.
   Nothing is swapped. These are the reports the desk already noted as one-day moves
-  (`desk-notes.json`); the #4471 page still counts them under `parser`.
+  (`desk-notes.json`). The desk counts them under `parser`, where their tenant files them, so the
+  `parser` row includes them; they have an issue of their own.
 
 ## How the reports were placed
 
