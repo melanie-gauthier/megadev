@@ -1,25 +1,25 @@
 <script lang="ts">
   import reports from '#lib/data/reports-4471.json';
   import notes from '#lib/data/desk-notes.json';
-  import { groupByCause, uniqueById, type CauseGroup, type Report } from '#lib/kb/causes';
+  import { groupByCause, readAs, uniqueById, type CauseGroup, type Report } from '#lib/kb/causes';
   import { tenantOf } from '#lib/kb/locales';
 
-  // One row per problem in a ticket, each with the issue filed for it. causes.ts files the desk's
-  // one-day moves under their tenant's cause; they are a problem of their own, so they get their own row.
+  // One row per problem in a ticket, each with the issue filed for it. Counted the desk's way: the
+  // one-day moves (desk-notes.json) stay counted under their tenant's cause, as CauseTable files them,
+  // and also get a row of their own, footnoted with where they are filed.
   let { ticket, issues }: { ticket: number; issues: Record<string, string> } = $props();
 
   const merged = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket));
+  const groups = $derived(groupByCause(merged, tenantOf));
   const moved = $derived(merged.filter((r) => notes.oneDayMove.includes(r.id)));
+  const filedUnder = $derived(groups.filter((g) => readAs(g, notes.oneDayMove)).map((g) => g.cause));
   const rows = $derived.by(() => {
-    const groups = groupByCause(
-      merged.filter((r) => !notes.oneDayMove.includes(r.id)),
-      tenantOf,
-    ).map((g) => ({ key: g.cause as string, ...g }));
+    const out = groups.map((g) => ({ key: g.cause as string, ...g }));
     if (moved.length) {
       const [shift] = groupByCause(moved, () => undefined);
-      groups.push({ ...shift, key: 'one-day move' });
+      out.push({ ...shift, key: 'one-day move' });
     }
-    return groups.sort((a, b) => b.reports.length - a.reports.length);
+    return out;
   });
   const tags = (g: Pick<CauseGroup, 'taggedAs'>) =>
     Object.entries(g.taggedAs)
@@ -52,7 +52,15 @@
   </tbody>
 </table>
 
+{#if moved.length}
+  <p class="note">
+    The {moved.length} one-day moves are counted under {#each filedUnder as c, i (c)}{i ? ', ' : ''}<code>{c}</code>{/each}, where
+    the desk files them by tenant, and have an issue of their own.
+  </p>
+{/if}
+
 <style>
+  .note { color: var(--muted); font-size: 0.85em; }
   .sum { font-size: 1.1rem; }
   .tags { color: var(--muted); font-size: 0.85em; }
 </style>
