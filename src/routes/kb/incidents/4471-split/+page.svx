@@ -1,0 +1,62 @@
+---
+layout: runbook
+title: '#4471, split · three problems, not one'
+owner: Melanie Gauthier
+status: open
+reviewed: 2026-11-01
+signature: Melanie Gauthier
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const issues = {
+    parser: 'https://github.com/melanie-gauthier/megadev/issues/1',
+    hint: 'https://github.com/melanie-gauthier/megadev/issues/2',
+    'one-day move': 'https://github.com/melanie-gauthier/megadev/issues/3',
+  };
+</script>
+
+[#4471](/kb/incidents/4471) is marked known: one issue, one fix queued. Read report by report, it
+holds three problems. The queued parser fix closes only the first. Each problem now has an issue of its own.
+
+<Callout kind="warn">
+Not one issue. Fixing the parser leaves the booking-v3 form hint and the one-day moves open.
+</Callout>
+
+## What #4471 holds
+
+<ProblemTable ticket={4471} {issues} />
+
+- **`parser`**: the shared parser reads every date month first. Every tenant on file writes the
+  day first, so day and month swap. Any channel, any form.
+- **`hint`**: booking-v3's form prints `MM/DD/YYYY` under its date field. People type what it
+  says, and the form reads it day first. Only the `form` channel of booking-v3 tenants. The parser
+  fix does not touch it.
+- **`one-day move`**: the booking lands a day early, or on different days in different time zones.
+  Nothing is swapped. These are the reports the desk already noted as one-day moves
+  (`desk-notes.json`); the #4471 page still counts them under `parser`.
+
+## How the reports were placed
+
+- The export pages overlap: some reports come twice. One id, one report.
+- A report's cause comes from its tenant (locale and booking form, `locales.ts`), not from intake's
+  tag. Intake guessed from the reporter's browser, and its `hint` tags are wrong both ways: the
+  `tagged as` column shows it.
+- Subjects say nothing about cause ([decision 0001](/kb/decisions/0001-dedupe-by-subject) merges on
+  them). All three problems share subjects such as "Booking on the wrong date".
+
+## Since April
+
+<QueueTimeline ticket={4471} />
+
+## Lessons
+
+- A count is not a cause. Before marking a big ticket known, read its reports against where they
+  came from.
+- Merging on subject puts different bugs in one thread. Split them before the fix ships.
+
+<RenderStamp {signature} />
