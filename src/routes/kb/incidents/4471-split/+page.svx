@@ -41,6 +41,14 @@ Not one issue. Fixing the parser leaves the booking-v3 form hint and the one-day
   (`desk-notes.json`). The desk counts them under `parser`, where their tenant files them, so the
   `parser` row includes them; they have an issue of their own.
 
+## Where they stand
+
+Engineering closed #4471 on 5 October.
+
+- **`parser`**: fixed, `fix(dates): parse dd/mm for eu locales`. Issue closed.
+- **`hint`**: won't fix, the booking-v3 form is retired. Issue closed.
+- **`one-day move`**: not covered by either. Its issue stays open.
+
 ## How the reports were placed
 
 - The export pages overlap: some reports come twice. One id, one report.

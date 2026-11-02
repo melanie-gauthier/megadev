@@ -48,6 +48,13 @@ figcaption { color:var(--muted); font-size:.85rem; }
 <li><strong><code>hint</code></strong>: booking-v3's form prints <code>MM/DD/YYYY</code> under its date field. People type what it says, and the form reads it day first. Only the <code>form</code> channel of booking-v3 tenants. The parser fix does not touch it.</li>
 <li><strong><code>one-day move</code></strong>: the booking lands a day early, or on different days in different time zones. Nothing is swapped. These are the reports the desk already noted as one-day moves (<code>desk-notes.json</code>). The desk counts them under <code>parser</code>, where their tenant files them, so the <code>parser</code> row includes them; they have an issue of their own.</li>
 </ul>
+<h2>Where they stand</h2>
+<p>Engineering closed #4471 on 5 October.</p>
+<ul>
+<li><strong><code>parser</code></strong>: fixed, <code>fix(dates): parse dd/mm for eu locales</code>. Issue closed.</li>
+<li><strong><code>hint</code></strong>: won't fix, the booking-v3 form is retired. Issue closed.</li>
+<li><strong><code>one-day move</code></strong>: not covered by either. Its issue stays open.</li>
+</ul>
 <h2>How the reports were placed</h2>
 <ul>
 <li>The export pages overlap: some reports come twice. One id, one report.</li>
